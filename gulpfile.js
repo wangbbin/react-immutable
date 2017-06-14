@@ -1,8 +1,9 @@
 var browserify = require('browserify');
 var watchify = require('watchify');
 var babelify = require('babelify');
-var gutil = require('gutil');
+var gutil = require('gulp-util');
 var source = require('vinyl-source-stream');
+var _ = require('lodash');
 
 var gulp = require('gulp');
 var connect = require('gulp-connect');
@@ -11,7 +12,16 @@ var browserifyOpts = {
     entries: 'main.js', // 入口文件
     debug: true,// 是否包含sourcemap
     cache: {},
-    packageCache: {}
+    packageCache: {}/*,
+    insertGlobals: true,
+    insertGlobalVars: _.reduce(
+        ['Error', 'TypeError', 'RangeError', 'URIError'],
+        (result, Error) => _.set(result, Error, (file, basedir) => {
+            const path = JSON.stringify(require('path').relative(basedir, file));
+            return `function(message){var error=new ${Error}(message, ${path});error.fileName=${path};return error;}`;
+        }),
+        {}
+    )*/
 };
 var bundle = function () {
     return watcher.bundle()
