@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react';
 import pureRender from "pure-render-decorator";
+import pr  from 'react-addons-pure-render-mixin';
 
 @pureRender
 class Person  extends Component {
