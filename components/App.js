@@ -22,7 +22,7 @@ export default class extends Component {
                 <input type="button" onClick={this._handleClick.bind(this)} value="确认"/>
                 {
                     persons.map((person,index)=>(
-                    <Person key={index} name={person.name} age={person.age}/>
+                    <Person key={index} detail={person}/>
                     ))
                 }
             </div>

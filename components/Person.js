@@ -3,20 +3,24 @@
  */
 import React, { Component } from 'react';
 import pureRender from "pure-render-decorator";
-import pr  from 'react-addons-pure-render-mixin';
+import PropTypes from 'prop-types';
 
 @pureRender
 class Person  extends Component {
+    static propTypes = {
+        detail: PropTypes.object.isRequired
+    };
+
     componentWillMount() {
         console.log('person will mount');
     }
 
     componentWillReceiveProps(newProps){
-        console.log(`我新的props的name是${newProps.name}，age是${newProps.age}。我以前的props的name是${this.props.name}，age是${this.props.age}是我要re-render了`);
+        console.log(`我新的props的name是${newProps.detail.name}，age是${newProps.detail.age}。我以前的props的name是${this.props.detail.name}，age是${this.props.detail.age}是我要re-render了`);
     }
     render() {
         console.log("我re-render了");
-        const {name,age} = this.props;
+        const {name,age} = this.props.detail;
 
         return (
             <div>
