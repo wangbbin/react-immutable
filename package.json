@@ -12,6 +12,7 @@
   "dependencies": {
     "babel-preset-stage-0": "^6.24.1",
     "babelify": "^7.3.0",
+    "brfs": "^1.4.3",
     "browserify": "^14.4.0",
     "cacheify": "^0.4.2",
     "gulp-connect": "^5.0.0",
@@ -19,6 +20,7 @@
     "prop-types": "^15.5.10",
     "pure-render-decorator": "^1.2.1",
     "react": "^15.5.4",
+    "react-addons-update": "^15.6.0",
     "react-dom": "^15.5.4",
     "watchify": "^3.9.0"
   },

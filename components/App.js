@@ -3,6 +3,8 @@
  */
 import React, { Component } from 'react';
 import Person from './Person';
+//const fs = require('fs');
+//var content = fs.readFileSync(__dirname + '/Person.js', 'utf8');
 
 export default class extends Component {
     constructor(props){

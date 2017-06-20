@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import pureRender from "pure-render-decorator";
 import PropTypes from 'prop-types';
+import update from 'react-addons-update';
 
 @pureRender
 class Person  extends Component {
@@ -13,7 +14,7 @@ class Person  extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: {foo: 'bar'}
+            value: {foo:{foo: 'bar'}}
         }
     }
 
@@ -26,8 +27,7 @@ class Person  extends Component {
     }
     handleOnclick() {
         var value = this.state.value;
-        value.foo += 'bar'; // ANTI-PATTERN!
-        this.setState({ value: value });
+        this.setState({ value: update(value, {foo: {foo: {$set: value.foo.foo + 'bar'}}}) });
     }
 
     render() {
@@ -38,7 +38,7 @@ class Person  extends Component {
             <div>
                 <span>姓名:</span><span>{name}</span>
                 <span onClick={this.handleOnclick.bind(this)}> age:</span><span>{age}</span>
-                <span>{this.state.value.foo}</span>
+                <span>{this.state.value.foo.foo}</span>
             </div>
         )
     }
