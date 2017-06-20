@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import Person from './Person';
 //const fs = require('fs');
 //var content = fs.readFileSync(__dirname + '/Person.js', 'utf8');
+import Text from './Text';
 
 export default class extends Component {
     constructor(props){
@@ -22,6 +23,7 @@ export default class extends Component {
                 <span>姓名:</span><input value={name} name="name" onChange={this._handleChange.bind(this)}/>
                 <span>年龄:</span><input value={age} name="age" onChange={this._handleChange.bind(this)}/>
                 <input type="button" onClick={this._handleClick.bind(this)} value="确认"/>
+                <Text />
                 {
                     persons.map((person,index)=>(
                     <Person key={index} detail={person}/>

@@ -16,6 +16,7 @@
     "browserify": "^14.4.0",
     "cacheify": "^0.4.2",
     "gulp-connect": "^5.0.0",
+    "immutable": "^3.8.1",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.10",
     "pure-render-decorator": "^1.2.1",
