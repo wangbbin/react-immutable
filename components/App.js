@@ -6,6 +6,7 @@ import Person from './Person';
 //const fs = require('fs');
 //var content = fs.readFileSync(__dirname + '/Person.js', 'utf8');
 import Text from './Text';
+import SurveyList from './SurveyList';
 
 export default class extends Component {
     constructor(props){
@@ -18,14 +19,16 @@ export default class extends Component {
     }
     render() {
         const {name,age,persons} = this.state;
+        console.log('App---> render');
         return (
             <div>
                 <span>姓名:</span><input value={name} name="name" onChange={this._handleChange.bind(this)}/>
                 <span>年龄:</span><input value={age} name="age" onChange={this._handleChange.bind(this)}/>
                 <input type="button" onClick={this._handleClick.bind(this)} value="确认"/>
                 <Text />
+                <SurveyList />
                 {
-                    persons.map((person,index)=>(
+                    persons.map((person, index)=>(
                     <Person key={index} detail={person}/>
                     ))
                 }
