@@ -1,52 +1,68 @@
-var browserify = require('browserify');
-var watchify = require('watchify');
-var babelify = require('babelify');
-var gutil = require('gulp-util');
-var source = require('vinyl-source-stream');
-var _ = require('lodash');
+const browserify = require('browserify');
+const watchify = require('watchify');
+const babelify = require('babelify');
+const gutil = require('gulp-util');
+const source = require('vinyl-source-stream');
+const _ = require('lodash');
 
-var gulp = require('gulp');
-var connect = require('gulp-connect');
+const gulp = require('gulp');
+const connect = require('gulp-connect');
+
+const dist = './dist';
+const distReactClass = './dist@react-class';
+
 // browserify的配置项
-var browserifyOpts = {
+const browserifyOpts = {
     entries: 'main.js', // 入口文件
     debug: true,// 是否包含sourcemap
     cache: {},
     packageCache: {}/*,
     insertGlobals: true,
-    insertGlobalVars: _.reduce(
+    insertGlobalconsts: _.reduce(
         ['Error', 'TypeError', 'RangeError', 'URIError'],
         (result, Error) => _.set(result, Error, (file, basedir) => {
             const path = JSON.stringify(require('path').relative(basedir, file));
-            return `function(message){var error=new ${Error}(message, ${path});error.fileName=${path};return error;}`;
+            return `function(message){const error=new ${Error}(message, ${path});error.fileName=${path};return error;}`;
         }),
         {}
     )*/
 };
-var bundle = function () {
-    return watcher.bundle()
-        .on('error', function (err) {
-            console.log(err.message);
-            console.log(err.stack);
+
+const browserifyOptsReactClass = _.extend({}, browserifyOpts, {entries: 'mainReactClass.js'});
+console.dir(browserifyOptsReactClass)
+
+function watchPayload(browserifyOptions, dist) {
+    const bundler = browserify(browserifyOptions)
+        .transform(babelify,  {
+            presets: ["es2015", "react", "stage-0"],
+            plugins: ["transform-decorators-legacy"]
         })
-        .pipe(source('bundle.js'))
-        .pipe(gulp.dest('./dist'))
-        .pipe(connect.reload());
-};
+        .transform('brfs');//for fs
 
+    const bundle = function () {
+        return watcher.bundle()
+            .on('error', function (err) {
+                console.log(err.message);
+                console.log(err.stack);
+            })
+            .pipe(source('bundle.js'))
+            .pipe(gulp.dest(dist))
+            .pipe(connect.reload());
+    };
 
-var bundler = browserify(browserifyOpts)
-    .transform(babelify,  {
-        presets: ["es2015", "react", "stage-0"],
-        plugins: ["transform-decorators-legacy"]
+    const watcher = watchify(bundler, {
+        delay: 100,
+        ignoreWatch: ['**/node_modules/**'],
+        poll: false
     })
-    .transform('brfs');
+        .on('update', bundle)
+        .on('log', gutil.log);
 
-var watcher = watchify(bundler)
-    .on('update', bundle)
-    .on('log', gutil.log);
+    return bundle;
+}
 
-gulp.task('watch-js', ['clean'], bundle);
+gulp.task('watch-js', ['clean'], watchPayload(browserifyOpts, dist));
+gulp.task('watch-js-react-class', ['watch-js'], watchPayload(browserifyOptsReactClass, distReactClass));
 
 gulp.task('connect', function () {
     connect.server({
@@ -58,10 +74,10 @@ gulp.task('connect', function () {
 });
 
 gulp.task('clean', function () {
-    require('del')('./dist')
+    return require('del')([dist, distReactClass])
         .then(paths => {
             paths.forEach(path => console.log('delete: %s', path.replace(__dirname, '')));
         });
 });
 
-gulp.task('default', ['watch-js', 'connect', 'clean']);
+gulp.task('default', ['watch-js', 'connect', 'clean', 'watch-js-react-class']);

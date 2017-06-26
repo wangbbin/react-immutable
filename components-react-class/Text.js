@@ -1,15 +1,16 @@
 /**
  * Created by topcmm on 6/20/2017.
  */
-import React, { Component } from 'react';
-import { Map } from 'immutable';
-//import _ from 'lodash';
+const React = require('react');
+const { Map } = require('immutable');
+//const _ = require('lodash');
 
-export default class extends Component {
-    state = {
-        data: Map({ times: 0 })
-    };
-
+module.exports = React.createClass({
+    getInitialState() {
+        return {
+            data: Map({ times: 0 })
+        };
+    },
     handleAdd() {
         /*//let data = _.cloneDeep(this.state.data);
         let data = this.state.data;
@@ -21,10 +22,9 @@ export default class extends Component {
         this.setState({ data: this.state.data.update('times', v => v + 1) });
         // 这时的 times 并不会改变
         console.log(this.state.data.get('times'));
-    }
-
+    },
     render() {
         console.log('Text---> render');
-        return (<span onClick={this.handleAdd.bind(this)}>add{this.state.data.get('times')}</span>);
+        return (<span onClick={this.handleAdd}>add{this.state.data.get('times')}</span>);
     }
-}
+});

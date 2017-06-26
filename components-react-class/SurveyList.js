@@ -1,16 +1,15 @@
 /**
  * Created by topcmm on 6/21/2017.
  */
-import React from 'react';
-import Immutable from 'immutable';
-import CheckboxWithLabel from './CheckboxWithLabel';
-import pureRender from "pure-render-decorator";
+const React = require('react');
+const Immutable = require('immutable');
+const CheckboxWithLabel = require('./CheckboxWithLabel');
+const pureRender = require('react-addons-pure-render-mixin');
 
-@pureRender
-class SurveyList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+const SurveyList = React.createClass({
+    mixins: [pureRender],
+    getInitialState() {
+        return {
             data: Immutable.fromJS({
                 items: [
                     {
@@ -37,37 +36,29 @@ class SurveyList extends React.Component {
                 ]
             })
         };
-        this.onChange = this.onChange.bind(this);
-    }
-
+    },
     componentWillMount() {
         console.log('Survey-->will mount');
-    }
-
+    },
     onChange(labelId) {
         const newState = this.state.data.setIn(["items", labelId, "checked"], !this.state.data.getIn(["items", labelId, "checked"]));
         this.setState({data: newState});
-    }
+    },
     componentWillReceiveProps (newProps) {
         console.log('Survey-->will receive');
-    }
-
+    },
     componentWillUpdate() {
         console.log('Survey--> will update');
-    }
-
+    },
     componentDidMount() {
         console.log('Survey--> did mount');
-    }
-
+    },
     componentDidUpdate() {
         console.log('Survey--> did update');
-    }
-
+    },
     componentWillUnmount() {
         console.log('Survey--> will Unmount');
-    }
-
+    },
     render() {
         const that = this;
         console.log('Survey-->render');
@@ -80,6 +71,6 @@ class SurveyList extends React.Component {
                 }
             </div>);
     }
-}
+});
 
-export default SurveyList;
+module.exports = SurveyList;
