@@ -80,4 +80,66 @@ gulp.task('clean', function () {
         });
 });
 
+function testMultiEntryFiles() {
+    const es = require('event-stream');
+    const rename = require('gulp-rename');
+    gulp.task('oneBundle', function() {
+        return browserify({ entries: ['multi-entry/main1.js'] })
+            .bundle()
+            .pipe(source('main.bundled.js'))
+            .pipe(gulp.dest('dist/multi-entry'));
+    });
+
+    gulp.task('moreBundle', function() {
+        // we define our input files, which we want to have
+        // bundled:
+        const files = [
+            './multi-entry/main1.js',
+            './multi-entry/main2.js'
+        ];
+        // map them to our stream function
+        const tasks = files.map(function(entry) {
+            return browserify({ entries: [entry] })
+                .bundle()
+                .pipe(source(entry))
+                // rename them to have "bundle as postfix"
+                .pipe(rename({
+                    extname: '.bundle.js'
+                }))
+                .pipe(gulp.dest('dist'));
+        });
+        // create a merged stream
+        return es.merge.apply(null, tasks);
+    });
+
+    const glob = require('glob');
+
+    gulp.task('globMoreBundle', function(done) {
+        glob('./multi-entry/main*.js', function(err, files) {
+            if(err) done(err);
+
+            var tasks = files.map(function(entry) {
+                return browserify({ entries: [entry] })
+                    .bundle()
+                    .pipe(source(entry))
+                    .pipe(rename({
+                        extname: '.bundle.js'
+                    }))
+                    .pipe(gulp.dest('dist'));
+            });
+            es.merge(tasks).on('end', done);
+        })
+    });
+
+    gulp.task('entryFiles', ()=>{
+        return browserify({ entries: ['multi-entry/main1.js', 'multi-entry/main2.js'] })
+            .bundle()
+            .pipe(source('main.bundled.js'))
+            .pipe(gulp.dest('dist/multi-entry'));
+    });
+}
+
+testMultiEntryFiles();
+
+
 gulp.task('default', ['watch-js', 'connect', 'clean', 'watch-js-react-class']);

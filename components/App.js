@@ -7,6 +7,7 @@ import Person from './Person';
 //var content = fs.readFileSync(__dirname + '/Person.js', 'utf8');
 import Text from './Text';
 import SurveyList from './SurveyList';
+import ForceUpdateAndSetProps from './ForceUpdateAndSetProps';
 
 export default class extends Component {
     constructor(props){
@@ -17,6 +18,10 @@ export default class extends Component {
             persons:[]
         }
     }
+    ForceUpdateOrSetProps = {
+        testForceUpdate: 'testForceUpdate',
+        testSetProps: 'testSetProps'
+    };
     render() {
         const {name,age,persons} = this.state;
         console.log('App---> render');
@@ -27,6 +32,13 @@ export default class extends Component {
                 <input type="button" onClick={this._handleClick.bind(this)} value="确认"/>
                 <Text />
                 <SurveyList />
+                <ForceUpdateAndSetProps
+                    ref="ForceUpdateOrSetProps"
+                    forceUpdate={this.ForceUpdateOrSetProps.testForceUpdate}
+                    forceUpdateRef={this.ForceUpdateOrSetProps}
+                    setProps={this.ForceUpdateOrSetProps.testSetProps}
+                    onClick={this._handleTestForceUpdateOrSetProps.bind(this)}
+                />
                 {
                     persons.map((person, index)=>(
                     <Person key={index} detail={person}/>
@@ -34,6 +46,13 @@ export default class extends Component {
                 }
             </div>
         )
+    }
+    _handleTestForceUpdateOrSetProps() {
+        /*this.ForceUpdateOrSetProps.testForceUpdate = 'newText';
+        this.refs['ForceUpdateOrSetProps'].forceUpdate();
+*/
+        this.ForceUpdateOrSetProps.testSetProps = 'newText';
+        this.refs['ForceUpdateOrSetProps'].setProps({testSetProps: 'abc'});
     }
     _handleChange(event){
         this.setState({[event.target.name]:event.target.value});
