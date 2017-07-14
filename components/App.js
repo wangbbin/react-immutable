@@ -10,6 +10,12 @@ import SurveyList from './SurveyList';
 import ForceUpdateAndSetProps from './ForceUpdateAndSetProps';
 import MyFunctional from './stateless/myFunctional';
 
+if(__DEV__ || true) {
+    console.log('dev');
+} else {
+    console.log('debug')
+}
+
 export default class extends Component {
     constructor(props){
         super(props);
