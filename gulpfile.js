@@ -5,6 +5,8 @@ const gutil = require('gulp-util');
 const source = require('vinyl-source-stream');
 const _ = require('lodash');
 
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
 const gulp = require('gulp');
 const connect = require('gulp-connect');
 
@@ -37,15 +39,18 @@ function watchPayload(browserifyOptions, dist) {
     const bundler = browserify(browserifyOptions)
         .transform(babelify,  {
             presets: ["es2015", "react", "stage-0"],
-            plugins: ["transform-decorators-legacy", 'dev-expression']
+            plugins: ["transform-decorators-legacy", require('babel-plugin-dev-expression'), 'transform-runtime', 'transform-strict-mode']
         })
-/*        .transform('envify', {
-            NODE_ENV: 'production',
-            global: true//for replace all file NODE_ENV,if ignore or false, exclude node_modules
-        })
+        .transform('envify', {
+            _: 'purge',
+            NODE_ENV,
+            DEBUG: false/*,
+            global: true*///for replace all file NODE_ENV,if ignore or false, exclude node_modules
+        })/*
         .transform(require('uglifyify'), {
             compress: false
         }) // for production*/
+        .transform(require('unreachable-branch-transform'))
         .transform('brfs');//for fs
 
     const bundle = function () {

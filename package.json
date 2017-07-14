@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "babel-plugin-dev-expression": "^0.2.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-plugin-transform-strict-mode": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babelify": "^7.3.0",
     "brfs": "^1.4.3",
@@ -28,6 +30,7 @@
     "react-addons-pure-render-mixin": "^15.6.0",
     "react-addons-update": "^15.6.0",
     "react-dom": "^15.5.4",
+    "unreachable-branch-transform": "^0.5.1",
     "vinyl-buffer": "^1.0.0",
     "watchify": "^3.9.0"
   },

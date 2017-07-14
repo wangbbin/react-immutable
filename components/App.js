@@ -10,10 +10,8 @@ import SurveyList from './SurveyList';
 import ForceUpdateAndSetProps from './ForceUpdateAndSetProps';
 import MyFunctional from './stateless/myFunctional';
 
-if(__DEV__ || true) {
-    console.log('dev');
-} else {
-    console.log('debug')
+if(__DEV__) {
+    let a = 3;
 }
 
 export default class extends Component {
