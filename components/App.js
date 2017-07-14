@@ -8,6 +8,7 @@ import Person from './Person';
 import Text from './Text';
 import SurveyList from './SurveyList';
 import ForceUpdateAndSetProps from './ForceUpdateAndSetProps';
+import MyFunctional from './stateless/myFunctional';
 
 export default class extends Component {
     constructor(props){
@@ -16,12 +17,17 @@ export default class extends Component {
             name:"",
             age :"",
             persons:[]
-        }
+        };
+        this.handleTextRef = this.handleTextRef.bind(this);
     }
     ForceUpdateOrSetProps = {
         testForceUpdate: 'testForceUpdate',
         testSetProps: 'testSetProps'
     };
+    handleTextRef(text) {
+        this.text = text;
+        console.log('text refs-->', text);
+    }
     render() {
         const {name,age,persons} = this.state;
         console.log('App---> render');
@@ -30,7 +36,10 @@ export default class extends Component {
                 <span>姓名:</span><input value={name} name="name" onChange={this._handleChange.bind(this)}/>
                 <span>年龄:</span><input value={age} name="age" onChange={this._handleChange.bind(this)}/>
                 <input type="button" onClick={this._handleClick.bind(this)} value="确认"/>
-                <Text />
+                {/*<Text ref={(text)=> {this.text = text; console.log('text refs-->', text)}}/>*/}
+                <Text ref={this.handleTextRef}>
+                    <span ref="span">children</span>
+                </Text>
                 <SurveyList />
                 <ForceUpdateAndSetProps
                     ref="ForceUpdateOrSetProps"
@@ -39,6 +48,10 @@ export default class extends Component {
                     setProps={this.ForceUpdateOrSetProps.testSetProps}
                     onClick={this._handleTestForceUpdateOrSetProps.bind(this)}
                 />
+                {/*你不能在函数式组件上使用 ref 属性，因为它们没有实例：
+                 但是，你可以在函数式组件内部使用 ref，只要它指向一个 DOM 元素或者 class 组件：
+                */}
+                <MyFunctional ref={(input)=>this.input = input}/>
                 {
                     persons.map((person, index)=>(
                     <Person key={index} detail={person}/>

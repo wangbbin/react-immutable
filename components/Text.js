@@ -25,6 +25,10 @@ export default class extends Component {
 
     render() {
         console.log('Text---> render');
-        return (<span onClick={this.handleAdd.bind(this)}>add{this.state.data.get('times')}</span>);
+        return (<span onClick={this.handleAdd.bind(this)}>
+            add
+            {this.state.data.get('times')}
+            {this.props.children}
+        </span>);
     }
 }
