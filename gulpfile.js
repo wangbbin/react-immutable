@@ -1,11 +1,15 @@
+'use strict';
 const browserify = require('browserify');
 const watchify = require('watchify');
 const babelify = require('babelify');
+const errorify = require('errorify');
 const gutil = require('gulp-util');
 const source = require('vinyl-source-stream');
 const _ = require('lodash');
+const gulpIf = require('gulp-if');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
+const DEBUG = NODE_ENV === 'development';
 
 const gulp = require('gulp');
 const connect = require('gulp-connect');
@@ -35,49 +39,65 @@ const browserifyOpts = {
 
 const browserifyOptsReactClass = _.extend({}, browserifyOpts, {entries: 'mainReactClass.js'});
 
-function watchPayload(browserifyOptions, dist) {
+function browserifyPaload(browserifyOptions) {
     const bundler = browserify(browserifyOptions)
         .transform(babelify,  {
             presets: ["es2015", "react", "stage-0"],
             plugins: ["transform-decorators-legacy", require('babel-plugin-dev-expression'), 'transform-runtime', 'transform-strict-mode']
         })
-        .transform('envify', {
-            _: 'purge',
-            NODE_ENV,
-            DEBUG: false/*,
-            global: true*///for replace all file NODE_ENV,if ignore or false, exclude node_modules
-        })/*
-        .transform(require('uglifyify'), {
-            compress: false
-        }) // for production*/
-        .transform(require('unreachable-branch-transform'))
+        /*.transform('envify', {
+         _: 'purge',
+         NODE_ENV,
+         DEBUG: false,
+         //global: true//for replace all file NODE_ENV,if ignore or false, exclude node_modules
+         })
+         .transform(require('uglifyify'), {
+         compress: false
+         }) // for production*/
+        //.transform(require('unreachable-branch-transform'))
         .transform('brfs');//for fs
+    return bundler;
+}
 
-    const bundle = function () {
-        return watcher.bundle()
+function bundlePayload(bundler, dist, needReload) {
+    needReload = !!needReload;
+    return () => {
+        return bundler.bundle()
             .on('error', function (err) {
                 console.log(err.message);
-                console.log(err.stack);
+                console.log('error from bundle',err.stack);
             })
             .pipe(source('bundle.js'))
-            /*.pipe(require('gulp-if')(true, require('vinyl-buffer')()))
-            .pipe(require('gulp-if')(true, require('gulp-envify')({
+            .pipe(gulpIf(!DEBUG, require('vinyl-buffer')()))
+            .pipe(gulpIf(!DEBUG, require('gulp-envify')({
                 NODE_ENV: 'production'
-            })))//for replace  NODE_ENV,Gulp plugin for envify without browserify */
+             })))//for replace  NODE_ENV,Gulp plugin for envify without browserify */
             .pipe(gulp.dest(dist))
-            .pipe(connect.reload());
+            .pipe(gulpIf(needReload, connect.reload()));
     };
-
-    const watcher = watchify(bundler, {
-        delay: 100,
-        ignoreWatch: ['**/node_modules/**'],
-        poll: false
-    })
-        .on('update', bundle)
-        .on('log', gutil.log);
-
-    return bundle;
 }
+
+function watchPayload(browserifyOptions, dist) {
+    return ()=> {
+        const bundler = browserifyPaload(browserifyOptions);
+
+        //bundler.plugin(errorify);
+
+        let watcher = watchify(bundler, {
+            delay: 100,
+            ignoreWatch: ['**/node_modules/**'],
+            poll: false
+        })
+            .on('update', () => bundle())
+            .on('log', gutil.log);
+
+        const bundle = bundlePayload(watcher, dist, true);
+
+        return bundle();
+    }
+}
+
+gulp.task('bundle', bundlePayload(browserifyPaload(browserifyOpts), dist));
 
 gulp.task('watch-js', ['clean'], watchPayload(browserifyOpts, dist));
 gulp.task('watch-js-react-class', ['watch-js'], watchPayload(browserifyOptsReactClass, distReactClass));
