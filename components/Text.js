@@ -2,6 +2,7 @@
  * Created by topcmm on 6/20/2017.
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Map } from 'immutable';
 //import _ from 'lodash';
 
@@ -11,6 +12,9 @@ export default class extends Component {
     };
     static defaultProps = {
         level: '  '
+    };
+    static contextTypes = {
+        cText: PropTypes.string
     };
     componentWillReceiveProps(nextProps) {
         console.log(this.props.level + 'Text--> will receive');
@@ -54,6 +58,7 @@ export default class extends Component {
             add
             {this.state.data.get('times')}
             {this.props.children}
+            {this.context.cText && this.context.cText || 'null'}
         </span>);
     }
 }

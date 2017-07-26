@@ -2,6 +2,7 @@
  * Created by topcmm on 6/16/2017.
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Person from './Person';
 //const fs = require('fs');
 //var content = fs.readFileSync(__dirname + '/Person.js', 'utf8');
@@ -24,9 +25,19 @@ export default class extends Component {
         };
         this.handleTextRef = this.handleTextRef.bind(this);
     }
+    static propTypes = {
+        level: PropTypes.string
+    };
+
     static defaultProps = {
         level: ''
     };
+    static childContextTypes = {
+        cText: PropTypes.string
+    };
+    getChildContext() {
+        return {cText: "purple"};
+    }
     ForceUpdateOrSetProps = {
         testForceUpdate: 'testForceUpdate',
         testSetProps: 'testSetProps'

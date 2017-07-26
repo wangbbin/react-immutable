@@ -2,6 +2,7 @@
  * Created by topcmm on 6/20/2017.
  */
 const React = require('react');
+const PropTypes = require('prop-types');
 const { Map } = require('immutable');
 //const _ = require('lodash');
 
@@ -15,6 +16,9 @@ module.exports = React.createClass({
         return {
             level: '  '
         }
+    },
+    contextTypes: {
+        cText: PropTypes.string
     },
     componentWillReceiveProps(nextProps) {
         console.log(this.props.level + 'Text--> will receive');
@@ -58,6 +62,7 @@ module.exports = React.createClass({
             add
             {this.state.data.get('times')}
             {this.props.children}
+            {this.context.cText && this.context.cText || null}
         </span>);
     }
 });

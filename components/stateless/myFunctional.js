@@ -2,14 +2,14 @@
  * Created by topcmm on 7/11/2017.
  */
 import React from 'react';
-
+import PropTypes from 'prop-types';
 /*
 export default function MyFunctionalComponent() {
 
     return <input />;
 }*/
 
-export default function CustomTextInput(props) {
+export default function CustomTextInput(props, context) {
     // 这里必须声明 textInput，这样 ref 回调才可以引用它
     console.log('  myFunctional render');
     let textInput = null;
@@ -28,6 +28,9 @@ export default function CustomTextInput(props) {
                 value="Focus the text input"
                 onClick={handleClick}
             />
+            {context.cText && context.cText || null}
         </div>
     );
-}
+};
+
+CustomTextInput.contextTypes = { cText: PropTypes.string};

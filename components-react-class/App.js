@@ -2,6 +2,7 @@
  * Created by topcmm on 6/16/2017.
  */
 const React = require('react');
+const PropTypes = require('prop-types');
 const Person = require('./Person');
 //const fs = require('fs');//module brfs
 //var content = fs.readFileSync(__dirname + '/Person.js', 'utf8');
@@ -11,6 +12,9 @@ const ForceUpdateAndSetProps = require('./ForceUpdateAndSetProps');
 const MyFunctional = require('./stateless/myFunctional');
 
 module.exports = React.createClass({
+    propsTypes: {
+        level: PropTypes.string
+    },
     getInitialState() {
         return {
             name: "",
@@ -22,6 +26,12 @@ module.exports = React.createClass({
         return {
             level: ''
         }
+    },
+    childContextTypes: {
+        cText: PropTypes.string
+    },
+    getChildContext() {
+        return {cText: "purple"};
     },
     ForceUpdateOrSetProps: {
         testForceUpdate: 'testForceUpdate',
