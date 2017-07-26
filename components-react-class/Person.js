@@ -11,27 +11,49 @@ const Person = React.createClass({
     propsTypes: {
         detail: PropTypes.object.isRequired
     },
-    /*getDefaultProps() {
-        return null;
-    },*/
-    getInitialState() {
+    getDefaultProps() {
         return {
-            value: {foo:{foo: 'bar'}}
+            level: '  '
         };
     },
-    componentWillMount() {
-        console.log('person will mount');
+    getInitialState() {
+        return {
+            value: {foo: {foo: 'bar'}}
+        };
     },
+
+    componentWillMount() {
+        console.log(this.props.level + 'person--> will mount');
+    },
+
     componentWillReceiveProps(newProps){
-        console.log(`我新的props的name是${newProps.detail.name}，age是${newProps.detail.age}。我以前的props的name是${this.props.detail.name}，age是${this.props.detail.age}是我要re-render了`);
+        console.log(this.props.level + `我新的props的name是${newProps.detail.name}，age是${newProps.detail.age}。我以前的props的name是${this.props.detail.name}，age是${this.props.detail.age}是我要re-render了`);
+    },
+
+    componentWillUpdate() {
+        console.log(this.props.level + 'person--> will update');
+    },
+
+    componentDidMount() {
+        console.log(this.props.level + 'person--> did mount');
+    },
+
+    componentDidUpdate() {
+        console.log(this.props.level + 'person--> did update');
+    },
+
+    componentWillUnmount() {
+        console.log(this.props.level + 'person--> will Unmount');
     },
     handleOnclick() {
         var value = this.state.value;
-        this.setState({ value: update(value, {foo: {foo: {$set: value.foo.foo + 'bar'}}}) });
+        this.setState({value: update(value, {foo: {foo: {$set: value.foo.foo + 'bar'}}})});
     },
+
     render() {
-        console.log("我re-render了");
-        const {name,age} = this.props.detail;
+        console.log(this.props.level + "我re-render了");
+        const {name, age} = this.props.detail;
+
         return (
             <div>
                 <span>姓名:</span><span>{name}</span>

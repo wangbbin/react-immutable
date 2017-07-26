@@ -37,31 +37,42 @@ const SurveyList = React.createClass({
             })
         };
     },
-    componentWillMount() {
-        console.log('Survey-->will mount');
+    getDefaultProps() {
+        return {
+            level: '  '
+        }
     },
+    componentWillMount() {
+        console.log(this.props.level + 'Survey--> will mount');
+    },
+
     onChange(labelId) {
         const newState = this.state.data.setIn(["items", labelId, "checked"], !this.state.data.getIn(["items", labelId, "checked"]));
         this.setState({data: newState});
     },
     componentWillReceiveProps (newProps) {
-        console.log('Survey-->will receive');
+        console.log(this.props.level + 'Survey-->will receive');
     },
+
     componentWillUpdate() {
-        console.log('Survey--> will update');
+        console.log(this.props.level + 'Survey--> will update');
     },
+
     componentDidMount() {
-        console.log('Survey--> did mount');
+        console.log(this.props.level + 'Survey--> did mount');
     },
+
     componentDidUpdate() {
-        console.log('Survey--> did update');
+        console.log(this.props.level + 'Survey--> did update');
     },
+
     componentWillUnmount() {
-        console.log('Survey--> will Unmount');
+        console.log(this.props.level + 'Survey--> will Unmount');
     },
+
     render() {
         const that = this;
-        console.log('Survey-->render');
+        console.log(this.props.level + 'Survey-->render');
         return (
             <div>
                 {

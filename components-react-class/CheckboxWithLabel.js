@@ -1,40 +1,54 @@
 const React = require('react');
 const pureRender = require('react-addons-pure-render-mixin');
+const SpanText = require('./SpanText');
 
 const CheckboxWithLabel = React.createClass({
 
-/*    shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.label !== this.props.label;
-    }*/
+    /*    shouldComponentUpdate(nextProps, nextState) {
+     return nextProps.label !== this.props.label;
+     }*/
     mixins: [pureRender],
+    getDefaultProps() {
+        return {
+            level: '    '
+        }
+    },
     componentWillMount() {
-        console.log('Label--> will mount');
+        console.log(this.props.level + 'Label--> will mount');
     },
+
     componentWillReceiveProps (nextProps) {
-        console.log(`Label-->Receive newProps${nextProps.label.get('text')}`);
+        console.log(this.props.level + `Label--> Receive newProps${nextProps.label.get('text')}`);
     },
+
     componentWillUpdate() {
-        console.log('Label--> will update');
+        console.log(this.props.level + 'Label--> will update');
     },
+
     componentDidMount() {
-        console.log('Label--> did mount');
+        console.log(this.props.level + 'Label--> did mount');
     },
+
     componentDidUpdate() {
-        console.log('Label--> did update');
+        console.log(this.props.level + 'Label--> did update');
     },
+
     componentWillUnmount() {
-        console.log('Label--> will Unmount');
+        console.log(this.props.level + 'Label--> will Unmount');
     },
+
     onChange() {
         this.props.onChange(this.props.label.get("id"));
     },
+
     render() {
-        console.log('Label--> render' + this.props.label.get("text"));
+        console.log(this.props.level + 'Label--> render' + this.props.label.get("text"));
         return (
             <label>
                 {this.props.label.get("text")}
-                <input type = "checkbox" checked={this.props.label.get("checked")} onChange={this.onChange}/>
+                <input type="checkbox" checked={this.props.label.get("checked")} onChange={this.onChange}/>
                 {this.props.label.get("checked") ? this.props.label.get("on") : this.props.label.get("off")}
+                <SpanText />
             </label>);
     }
 });
