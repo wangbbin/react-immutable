@@ -39,9 +39,11 @@ class SurveyList extends React.Component {
         };
         this.onChange = this.onChange.bind(this);
     }
-
+    static defaultProps = {
+        level: '  '
+    };
     componentWillMount() {
-        console.log('Survey-->will mount');
+        console.log(this.props.level + 'Survey--> will mount');
     }
 
     onChange(labelId) {
@@ -49,28 +51,28 @@ class SurveyList extends React.Component {
         this.setState({data: newState});
     }
     componentWillReceiveProps (newProps) {
-        console.log('Survey-->will receive');
+        console.log(this.props.level + 'Survey-->will receive');
     }
 
     componentWillUpdate() {
-        console.log('Survey--> will update');
+        console.log(this.props.level + 'Survey--> will update');
     }
 
     componentDidMount() {
-        console.log('Survey--> did mount');
+        console.log(this.props.level + 'Survey--> did mount');
     }
 
     componentDidUpdate() {
-        console.log('Survey--> did update');
+        console.log(this.props.level + 'Survey--> did update');
     }
 
     componentWillUnmount() {
-        console.log('Survey--> will Unmount');
+        console.log(this.props.level + 'Survey--> will Unmount');
     }
 
     render() {
         const that = this;
-        console.log('Survey-->render');
+        console.log(this.props.level + 'Survey-->render');
         return (
             <div>
                 {

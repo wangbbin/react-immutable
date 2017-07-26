@@ -24,23 +24,49 @@ export default class extends Component {
         };
         this.handleTextRef = this.handleTextRef.bind(this);
     }
+    static defaultProps = {
+        level: ''
+    };
     ForceUpdateOrSetProps = {
         testForceUpdate: 'testForceUpdate',
         testSetProps: 'testSetProps'
     };
+    componentWillMount() {
+        console.log(this.props.level + 'APP--> will mount');
+    }
+
+    componentWillReceiveProps (nextProps) {
+        console.log(this.props.level + `APP--> Receive newProps`);
+    }
+
+    componentWillUpdate() {
+        console.log(this.props.level + 'APP--> will update');
+    }
+
+    componentDidMount() {
+        console.log(this.props.level + 'APP--> did mount');
+    }
+
+    componentDidUpdate() {
+        console.log(this.props.level + 'APP--> did update');
+    }
+
+    componentWillUnmount() {
+        console.log(this.props.level + 'APP--> will Unmount');
+    }
     handleTextRef(text) {
         this.text = text;
-        console.log('text refs-->', text);
+        console.log(this.props.level + 'APP--> text refs-->', text);
     }
     render() {
         const {name,age,persons} = this.state;
-        console.log('App---> render');
+        console.log(this.props.level + 'App---> render');
         return (
             <div>
                 <span>姓名:</span><input value={name} name="name" onChange={this._handleChange.bind(this)}/>
                 <span>年龄:</span><input value={age} name="age" onChange={this._handleChange.bind(this)}/>
                 <input type="button" onClick={this._handleClick.bind(this)} value="确认"/>
-                {/*<Text ref={(text)=> {this.text = text; console.log('text refs-->', text)}}/>*/}
+                {/*<Text ref={(text)=> {this.text = text; console.log(this.props.level + 'text refs-->', text)}}/>*/}
                 <Text ref={this.handleTextRef}>
                     <span ref="span">children</span>
                 </Text>

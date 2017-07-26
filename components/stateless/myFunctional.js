@@ -11,7 +11,7 @@ export default function MyFunctionalComponent() {
 
 export default function CustomTextInput(props) {
     // 这里必须声明 textInput，这样 ref 回调才可以引用它
-    console.log('myFunctional render');
+    console.log('  myFunctional render');
     let textInput = null;
 
     function handleClick() {
@@ -22,7 +22,7 @@ export default function CustomTextInput(props) {
         <div>
             <input
                 type="text"
-                ref={(input) => { textInput = input;console.log('myFunctional refs-->', input) }} />
+                ref={(input) => { textInput = input;console.log('  myFunctional refs-->', input) }} />
             <input
                 type="button"
                 value="Focus the text input"

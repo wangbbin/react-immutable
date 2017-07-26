@@ -11,6 +11,9 @@ class Person  extends Component {
     static propTypes = {
         detail: PropTypes.object.isRequired
     };
+    static defaultProps = {
+        level: '  '
+    };
     constructor(props) {
         super(props);
         this.state = {
@@ -19,11 +22,27 @@ class Person  extends Component {
     }
 
     componentWillMount() {
-        console.log('person will mount');
+        console.log(this.props.level + 'person--> will mount');
     }
 
     componentWillReceiveProps(newProps){
-        console.log(`我新的props的name是${newProps.detail.name}，age是${newProps.detail.age}。我以前的props的name是${this.props.detail.name}，age是${this.props.detail.age}是我要re-render了`);
+        console.log(this.props.level + `我新的props的name是${newProps.detail.name}，age是${newProps.detail.age}。我以前的props的name是${this.props.detail.name}，age是${this.props.detail.age}是我要re-render了`);
+    }
+
+    componentWillUpdate() {
+        console.log(this.props.level + 'person--> will update');
+    }
+
+    componentDidMount() {
+        console.log(this.props.level + 'person--> did mount');
+    }
+
+    componentDidUpdate() {
+        console.log(this.props.level + 'person--> did update');
+    }
+
+    componentWillUnmount() {
+        console.log(this.props.level + 'person--> will Unmount');
     }
     handleOnclick() {
         var value = this.state.value;
@@ -31,7 +50,7 @@ class Person  extends Component {
     }
 
     render() {
-        console.log("我re-render了");
+        console.log(this.props.level + "我re-render了");
         const {name,age} = this.props.detail;
 
         return (
